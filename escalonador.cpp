@@ -86,7 +86,7 @@ void FCFS(const Processo *processos)
 void SJF (const Processo *processos){
 /*
   SJF
-       
+
 */
         int num_de_processos = tempo_entrada.size();
         float tempo_inicio[num_de_processos];
@@ -104,9 +104,9 @@ void SJF (const Processo *processos){
 }
 void RR(const Processo *processos)
 {
-/*  
+/*
   Round Robin
-    
+
 */
         int num_de_processos = tempo_entrada.size();
         float tempo_inicio[num_de_processos];
@@ -166,7 +166,7 @@ int main ()
             }
     }
     /*Chamada da função de ordenação de processos*/
-    Ordena(processos);
+    Ordena_chegada(processos);
 
     /* Printando os dados armazenados nos de cada processo */
     for(int i =0;i<numero_de_processos;i++)
