@@ -11,17 +11,52 @@
 
 using namespace std;
 
-typedef struct {
- int ID_Processo  = 0;
- int Tempo_Duracao = 0;
- int Tempo_Exec = 0;
- int Tempo_Chegada = 0;
- int Tempo_Restante = 0;
-}Processo;
+typedef struct 
+  {
+   int ID_Processo  = 0;
+   int Tempo_Duracao = 0;
+   int Tempo_Exec = 0;
+   int Tempo_Chegada = 0;
+   int Tempo_Restante = 0;
+  }Processo;
 
 /*Vetores que armazena as entrdadas do arquivo*/
 vector<int>tempo_entrada;
 vector<int>tempo_duracao;
+
+/* Ordena os processos caso o tempo de chegada esteja fora de ordem */
+void Ordena_chegada(Processo *Ordena)
+{
+  Processo aux;
+
+   for(int j=tempo_entrada.size()-1; j>0; j--){
+        for ( int i=0; i<j; i++){
+            if (Ordena[i].Tempo_Chegada > Ordena[i+1].Tempo_Chegada){
+                aux = Ordena[i];
+                Ordena[i] = Ordena[i+1];
+                Ordena[i+1] = aux;
+            }
+        }
+    }
+
+}
+
+/* Ordena os processos caso o tempo de chegada esteja fora de ordem */
+void Ordena_duracao(Processo *Ordena)
+{
+  Processo aux;
+
+   for(int j=tempo_entrada.size()-1; j>0; j--){
+        for ( int i=0; i<j; i++){
+            if (Ordena[i].Tempo_Duracao > Ordena[i+1].Tempo_Duracao){
+                aux = Ordena[i];
+                Ordena[i] = Ordena[i+1];
+                Ordena[i+1] = aux;
+            }
+        }
+    }
+
+}
 
 /* Abre o arquivo, e armazena os dados nos lugares corretos */
 void recebendo_arquivo()
@@ -83,11 +118,9 @@ void FCFS(const Processo *processos)
 
 }
 
-void SJF (const Processo *processos){
-/*
-  SJF
+void SJF (const Processo *processos)
+{
 
-*/
         int num_de_processos = tempo_entrada.size();
         float tempo_inicio[num_de_processos];
         float tempo_retorno[num_de_processos];
@@ -101,7 +134,22 @@ void SJF (const Processo *processos){
               tempo_espera_total = 0;
 
 
+
+
+
+
+
+
+            /* Tempos medios */
+            tempo_medio_espera = tempo_espera_total / num_de_processos;
+            tempo_medio_retorno = tempo_retorno_total / num_de_processos;
+            tempo_medio_resposta = tempo_resposta_total / num_de_processos;
+            cout<<"SJF: "<<tempo_medio_retorno<<" "<<tempo_medio_resposta<<" "<<tempo_medio_espera<<endl;
+
+
 }
+
+
 void RR(const Processo *processos)
 {
 /*
@@ -123,36 +171,22 @@ void RR(const Processo *processos)
 
 }
 
-/* Ordena os processos caso o tempo de chegada esteja fora de ordem */
-void Ordena_chegada(Processo *Ordena)
+/* Printa na tela os processos junto com os tempos de entrada e duração*/
+void print (const Processo *processos, int numero_de_processos)
 {
-  Processo aux;
 
-   for(int j=tempo_entrada.size()-1; j>0; j--){
-        for ( int i=0; i<j; i++){
-            if (Ordena[i].Tempo_Chegada > Ordena[i+1].Tempo_Chegada){
-                aux = Ordena[i];
-                Ordena[i] = Ordena[i+1];
-                Ordena[i+1] = aux;
-            }
-        }
+    for(int i =0;i<numero_de_processos;i++)
+    {
+        cout<<"ID do processo: "<<processos[i].ID_Processo<<" Tempo de entrada: "<<processos[i].Tempo_Chegada<<" Tempo de duracao: "<<processos[i].Tempo_Duracao<<endl;
+
     }
 
 }
 
-int main ()
+/* armazenando os dados de entrada do arquivo na struct */
+void armazena_no_struct(Processo *processos,int numero_de_processos)
 {
-    /*chamada da função*/
-    recebendo_arquivo();
 
-    /* como cada linha é um processo, podemos obter a quantidade de processos pelo tamanho de um dos vetores de entrada*/
-    int numero_de_processos = tempo_entrada.size();
-
-    /*objeto da struct */
-    Processo *processos = new Processo[numero_de_processos];
-
-
-    /* armazenando os dados de entrada do arquivo na struct */
     for(int i = 0; i < numero_de_processos; i++)
     {
         processos[i].ID_Processo = i;
@@ -165,17 +199,32 @@ int main ()
               numero_de_processos = numero_de_processos - 1;
             }
     }
-    /*Chamada da função de ordenação de processos*/
-    Ordena_chegada(processos);
+}
 
-    /* Printando os dados armazenados nos de cada processo */
-    for(int i =0;i<numero_de_processos;i++)
-    {
-        cout<<"ID do processo: "<<processos[i].ID_Processo<<" Tempo de entrada: "<<processos[i].Tempo_Chegada<<" Tempo de duracao: "<<processos[i].Tempo_Duracao<<endl;
 
-    }
+int main ()
+{
+    /*chamada da função*/
+    recebendo_arquivo();
+
+    /* como cada linha é um processo, podemos obter a quantidade de processos pelo tamanho de um dos vetores de entrada*/
+    int numero_de_processos = tempo_entrada.size();
+
+    /*objeto da struct */
+    Processo *processos = new Processo[numero_de_processos]; /*nova struct do tipo processos para FCFS e RR */
+    Processo *processos_to_SJF = new Processo[numero_de_processos]; /*nova struct do tipo processos para SJF */
+
+    /* armazenando os dados de entrada do arquivo na struct */
+    armazena_no_struct(processos,numero_de_processos);
+    armazena_no_struct(processos_to_SJF,numero_de_processos);
+    
+    Ordena_chegada(processos);/*Chamada da função de ordenação de processos*/
+    Ordena_duracao(processos_to_SJF); /*Chamadas do ordenador por ordem de duração (Mais curto primeiro)*/
+
+    print(processos,numero_de_processos);/*Chama a função que printa a lista de processos*/
+   
     /*Chamadas dos escalonadores*/
-    FCFS(processos);
+    FCFS(processos); 
     SJF(processos);
     RR(processos);
 
