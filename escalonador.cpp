@@ -4,23 +4,18 @@
  * Disciplina: Sistemas Operacionais I
  * Engenharia de Computação - CI - UFPB
  */
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <iomanip>
-#include <fstream>
-#include <deque>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 typedef struct
-  {
-   int ID_Processo  = 0;
-   int Tempo_Duracao = 0;
-   int Tempo_Exec = 0;
-   int Tempo_Chegada = 0;
-   int Tempo_Restante = 0;
-  }Processo;
+              {
+               int ID_Processo  = 0;
+               int Tempo_Duracao = 0;
+               int Tempo_Exec = 0;
+               int Tempo_Chegada = 0;
+               int Tempo_Restante = 0;
+              }Processo;
 
 /*Vetores que armazena as entrdadas do arquivo*/
 vector<int>tempo_entrada;
