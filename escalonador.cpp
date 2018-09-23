@@ -57,23 +57,6 @@ void calcula_medias (string escalonador_tipo, float tempo_de_resposta,float temp
 
 }
 
-/* Ordena os processos caso o tempo de chegada esteja fora de ordem */
-void Ordena_duracao(Processo *Ordena)
-{
-  Processo aux;
-
-   for(int j=tempo_entrada.size()-1; j>0; j--){
-        for ( int i=0; i<j; i++){
-            if (Ordena[i].Tempo_Duracao > Ordena[i+1].Tempo_Duracao){
-                aux = Ordena[i];
-                Ordena[i] = Ordena[i+1];
-                Ordena[i+1] = aux;
-            }
-        }
-    }
-
-}
-
 /* Abre o arquivo, e armazena os dados nos lugares corretos */
 void recebendo_arquivo(string nome)
 {
@@ -311,7 +294,7 @@ void armazena_no_struct(Processo *processos,int numero_de_processos)
 int main ()
 {
     /*chamada da função*/
-    recebendo_arquivo("<testes></testes>.txt");
+    recebendo_arquivo("testes.txt");
 
     /* como cada linha é um processo, podemos obter a quantidade de processos pelo tamanho de um dos vetores de entrada*/
     int numero_de_processos = tempo_entrada.size();
