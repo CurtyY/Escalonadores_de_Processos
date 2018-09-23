@@ -72,7 +72,7 @@ void recebendo_arquivo(string nome)
             file.close();
 }
 /* compara tempo de duração de processos */
-bool comparar1(const Processo& p1, const Processo& p2){
+bool comparar(const Processo& p1, const Processo& p2){
 
 	return (p1.Tempo_Duracao <= p2.Tempo_Duracao);
 
@@ -152,7 +152,7 @@ void SJF (const Processo *processos)
       			}
 
       		}
-      		sort(prontos.begin(),prontos.end(),comparar1);
+      		sort(prontos.begin(),prontos.end(),comparar);
 
       		Processo inicio = prontos[0];
       		retorno--;
